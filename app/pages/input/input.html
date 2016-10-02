@@ -21,9 +21,11 @@
         </ion-item>
     </ion-list>
     <ion-grid>
-      <ion-row>
-        <ion-col width-50><button style="float: right;border: 2px;border-color: red" appgreen> Chaldean </button></ion-col>
-        <ion-col width-50><button clear> Pythagorean </button></ion-col>
+      <ion-row no-padding>
+        <ion-col no-padding></ion-col>
+        <ion-col no-padding><button class="borders-button" [class.appgreen]="!numrlgyMethod"  (click)="chalBtnClicked()"> Chaldean </button></ion-col>
+        <ion-col no-padding ><button class="borders-button" [class.clear]="!numrlgyMethod" (click)="pythBtnClicked()" > Pythagorean </button></ion-col>
+        <ion-col no-padding ></ion-col>
       </ion-row>
     </ion-grid>
 <!--<button bar clear>

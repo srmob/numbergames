@@ -19,6 +19,8 @@ export class InputPage {
    private totalValueSum = 0;
    private totalSum = 0;
    public userinput;
+   private paidAppBtn: boolean = false; // For free app Chaldean is available else Pythagorean
+   private numrlgyMethod: string = "C"; // For  Chaldean (C)  else P for Pythagorean
 
 
   constructor(public navCtrl: NavController, private navParams: NavParams,private formBuilder: FormBuilder) {
@@ -152,6 +154,10 @@ export class InputPage {
         totalValueSum: '',
         totalSum:''
      }
+  }
+  numrlgyBtnClicked() {
+      this.paidAppBtn = true;
+      this.numrlgyMethod = !this.numrlgyMethod;
   }
 
   
