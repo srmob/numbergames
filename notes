@@ -1,0 +1,19 @@
+var customBuildSass = function () {
+	buildSass({
+		src: 'app/theme/app.+(ios|md|wp).scss',
+		dest: 'www/build/css',
+		sassOptions: {
+			includePaths: [
+				'node_modules/ionic-angular',
+				'node_modules/ionicons/dist/scss'
+			]
+		}
+	}); // generate files from /app/theme/ (original)
+	buildSass({
+		src: 'app/pages/**/*.scss',
+		dest: 'www/build/css/components',
+		sassOptions: {}
+	}); // generate files from /app/pages/ (customized)
+};
+
+gulp.task('sass', customBuildSass);
