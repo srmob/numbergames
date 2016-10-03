@@ -5,9 +5,11 @@ import {ResultPage} from '../result/result';
 
 import {Validators, FormBuilder } from '@angular/forms';
 
+//import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   templateUrl: 'build/pages/input/input.html'
+  
 })
 export class InputPage {
 
@@ -18,9 +20,10 @@ export class InputPage {
    private lValueSum = 0 ;
    private totalValueSum = 0;
    private totalSum = 0;
-   public userinput;
    private paidAppBtn: boolean = false; // For free app Chaldean is available else Pythagorean
-   private numrlgyMethod: string = "C"; // For  Chaldean (C)  else P for Pythagorean
+   private numrlgyMethod: string = "C"; // For  Chaldean (C)  else {false} for Pythagorean
+  // private userinputform;
+  public userform;
 
 
   constructor(public navCtrl: NavController, private navParams: NavParams,private formBuilder: FormBuilder) {
@@ -44,14 +47,33 @@ export class InputPage {
         "r":2 ,"R":2 ,"s": 3,"S": 3,"t": 4,"T":4 ,"u": 6,"U": 6,
         "v": 6,"V":6 ,"w":6 ,"W":6 , "x":5 ,"X": 5,"y": 1,"Y":1 ,"z": 7,"Z": 7,
     }
+    
+    
   }
-//   ionViewLoaded() {
-//     this.userinput = this.formBuilder.group({
-//       fName: ['', Validators.required],
-//       mName: ['', Validators.required],
-//       lName: ['', Validators.required]
-//     });
-//   }
+  /*ionViewLoaded() {
+        this.userinputform = this.formBuilder.group({
+            fName: ['', Validators.required],
+            mName: ['' ],
+            lName: ['' ],
+        });
+    }
+  logForm(){
+        console.log(this.userinputform.value)
+  }*/
+  ionViewLoaded() {
+    this.userform = this.formBuilder.group({
+      fName: ['', Validators.compose([Validators.minLength(0),Validators.pattern('[a-zA-Z 0-9]*')])],
+      mName: ['', Validators.compose([Validators.minLength(0),Validators.pattern('[a-zA-Z 0-9]*')])],
+      lName: ['', Validators.compose([Validators.minLength(0),Validators.pattern('[a-zA-Z 0-9]*')])],
+    });
+  }
+  logForm(){
+    console.log(this.userform.value)
+    this.person.fName = this.userform.controls['fName'].value   ;
+    this.person.mName = this.userform.controls['mName'].value   ;
+    this.person.lName = this.userform.controls['lName'].value   ;
+    console.log("this person is "+JSON.stringify(this.person));
+  }
   addTotal(value){
       var sum = 0;
       console.log("Value passed is"+value)
@@ -87,17 +109,28 @@ export class InputPage {
        
         }
         console.log("Total Sum is"+this.person.totalSum);
-       // 3112142213551
   }
   
 
-  showResult(event) {
+  showResult() {
     this.person.fNameValue = 0 ;
     this.person.lNameValue = 0 ; 
     this.person.mNameValue = 0 ; 
     this.person.totalValueSum = 0
     this.person.totalSum = 0;
-    console.log("calculate clicked"+this.values["a"])
+    /*console.log('Submitted value:::'+this.userinputform.value)
+    //console.log('Submitted value: ', value);
+    this.person.fName = this.userinputform.controls['fName'].value   ;
+    this.person.mName = this.userinputform.controls['mName'].value   ;
+    this.person.lName = this.userinputform.controls['lName'].value   ;
+    console.log("Fname in showResult is->"+this.person.fName);*/
+
+    //console.log("calculate clicked"+this.values["a"])
+
+    this.person.fName = this.userform.controls['fName'].value   ;
+    this.person.mName = this.userform.controls['mName'].value   ;
+    this.person.lName = this.userform.controls['lName'].value   ;
+    
      if ( (this.person.fName).length){
          this.calculateSum(this.person.fName.trim(),1);
          this.person.totalSum += this.person.fNameValue;
@@ -105,8 +138,7 @@ export class InputPage {
          if(this.person.fNameValue >= 10 ){
             this.person.fNameValue = this.addTotal(this.person.fNameValue);
         }
-     } else 
-        this.person.fName = null;
+     }
      if ( (this.person.mName).length){
          this.calculateSum(this.person.mName.trim(),2);
          this.person.totalSum += this.person.mNameValue;
@@ -138,26 +170,29 @@ export class InputPage {
          //this.person.lNameValue = this.addTotal(this.person.lNameValue);
         // console.log("lName value is after:: "+this.person.lNameValue);
      //}
-     let totalValue = this.person.fNameValue + this.person.mNameValue + this.person.lNameValue;
-     this.person.totalValueSum = this.addTotal(totalValue)
-     //this.person.totalSum = this.addTotal(this.addTotal(totalValue))
-     this.navCtrl.push(ResultPage,{user: this.person});
+      let totalValue = this.person.fNameValue + this.person.mNameValue + this.person.lNameValue;
+      this.person.totalValueSum = this.addTotal(totalValue)
+    //  //this.person.totalSum = this.addTotal(this.addTotal(totalValue))
+      this.navCtrl.push(ResultPage,{user: this.person});
   }
   clearInput (){
-      this.person = {
-        fName : '',
-        fNameValue :'',
-        mName : '',
-        mNameValue :'',
-        lName : '',
-        lNameValue :'',
-        totalValueSum: '',
-        totalSum:''
-     }
+      this.userform = this.formBuilder.group({
+        fName: ['', Validators.compose([Validators.minLength(0),Validators.pattern('[a-zA-Z 0-9]*')])],
+        mName: ['', Validators.compose([Validators.minLength(0),Validators.pattern('[a-zA-Z 0-9]*')])],
+        lName: ['', Validators.compose([Validators.minLength(0),Validators.pattern('[a-zA-Z 0-9]*')])],
+        });
   }
   numrlgyBtnClicked() {
       this.paidAppBtn = true;
-      this.numrlgyMethod = !this.numrlgyMethod;
+      //this.numrlgyMethod = !this.numrlgyMethod;
+  }
+  chalBtnClicked() {
+      this.numrlgyMethod = 'C';
+      //console.log("Numerology method is -> "+this.numrlgyMethod);
+  }
+  pythBtnClicked(){
+      this.numrlgyMethod = 'P';
+      //console.log("Numerology method PythBtn is -> "+this.numrlgyMethod)
   }
 
   

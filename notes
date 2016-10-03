@@ -17,3 +17,95 @@ var customBuildSass = function () {
 };
 
 gulp.task('sass', customBuildSass);
+
+<form [formGroup]="userInputForm" >
+      <ion-list>
+        <ion-item>
+          <!--<ion-input type="text"  [(ngModel)]="person.fName" name="fName" placeholder="First Name" clearInput></ion-input> -->
+           <ion-input type="text" formControlName="firstName" placeholder="First Name"  clearInput></ion-input>
+        </ion-item>
+       
+        <!--<ion-item>-->
+          <!--<ion-input type="text" [(ngModel)]="person.mName" name="mName" placeholder="Middle Name" clearInput></ion-input>-->
+          <!--<ion-input type="text" [(ngModel)]="person.mName" name="mName" placeholder="Middle Name" clearInput></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input type="text" [(ngModel)]="person.lName" name="lName" placeholder="Last Name" clearInput></ion-input>
+        </ion-item>-->
+    </ion-list>
+    <ion-grid>
+      <ion-row no-padding>
+        <ion-col no-padding></ion-col>
+        <ion-col no-padding><button class="borders-button" [class.button-appgreen]="numrlgyMethod == 'C'" [class.button-clear]="numrlgyMethod == 'P'"  (click)="chalBtnClicked()"> Chaldean </button></ion-col>
+        <ion-col no-padding ><button class="borders-button" [class.button-appgreen]="numrlgyMethod == 'P'" [class.button-clear]="numrlgyMethod == 'C'" (click)="pythBtnClicked()" > Pythagorean </button></ion-col>
+        <ion-col no-padding ></ion-col>
+      </ion-row>
+    </ion-grid>
+<!--<button bar clear>
+    <button appgreen>Chaldean  </button>
+    <button clear>Pythagorean   </button>
+</button>-->
+
+<ion-grid>
+  <ion-row baseline>
+    <ion-col width-20></ion-col>
+    <ion-col width-60><button end  block medium appgreen (click)="showResult(userinputform)" type="submit"> Calculate </button></ion-col>
+    <!-- <ion-col width-60><button end  block medium  (click)="showResult()" appgreen type="submit" [disabled]="!userinput.valid"> Calculate </button></ion-col>-->
+    <ion-col width-20></ion-col>
+  </ion-row>
+  <ion-row baseline>
+    <ion-col width-20></ion-col>
+    <ion-col width-60><button block medium danger (click)="clearInput()" type="reset"> Clear </button> </ion-col>
+    <ion-col width-20></ion-col>
+  </ion-row>
+</ion-grid>
+</form>
+
+
+
+//// Latest working code except validation
+<ion-content>
+   <!--<form [formGroup]="userinputform" (ngSubmit)="showResult()">-->
+    
+      <ion-list>
+        <ion-item>
+          <ion-input type="text" [(ngModel)]="person.fName" name="fName" placeholder="First Name" clearInput></ion-input> 
+          <!--<ion-input type="text" formControlName="fName" name="fName" placeholder="First Name" clearInput></ion-input> -->
+        </ion-item>
+       
+        <ion-item>
+          <!--<ion-input type="text" formControlName="mName" name="mName" placeholder="Middle Name" clearInput></ion-input>-->
+          <ion-input type="text" [(ngModel)]="person.mName" name="mName" placeholder="Middle Name" clearInput></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input type="text" [(ngModel)]="person.lName"  name="lName" placeholder="Last Name" clearInput></ion-input>
+          <!--<ion-input type="text" formControlName="lName" name="lName" placeholder="Last Name" clearInput></ion-input>-->
+        </ion-item>
+    </ion-list>
+    <ion-grid>
+      <ion-row no-padding>
+        <ion-col no-padding></ion-col>
+        <ion-col no-padding><button class="borders-button" [class.button-appgreen]="numrlgyMethod == 'C'" [class.button-clear]="numrlgyMethod == 'P'"  (click)="chalBtnClicked()"> Chaldean </button></ion-col>
+        <ion-col no-padding ><button class="borders-button" [class.button-appgreen]="numrlgyMethod == 'P'" [class.button-clear]="numrlgyMethod == 'C'" (click)="pythBtnClicked()" > Pythagorean </button></ion-col>
+        <ion-col no-padding ></ion-col>
+      </ion-row>
+    </ion-grid>
+
+<ion-grid>
+  <ion-row baseline>
+    <ion-col width-20></ion-col>
+    <ion-col width-60>
+      <div >
+        <button  end  block medium appgreen  (click)="showResult()" [disabled]="person.fName.length == 0 && person.mName.length == 0 && person.lName.length == 0 "> Calculate </button>
+      </div>
+      </ion-col>
+    <!--<ion-col width-60><button end  block medium  (click)="showResult()" appgreen type="submit" [disabled]="!userinput.valid"> Calculate </button></ion-col>-->
+    <ion-col width-20></ion-col>
+  </ion-row>
+  <ion-row baseline>
+    <ion-col width-20></ion-col>
+    <ion-col width-60><button block medium danger (click)="clearInput()" type="reset"> Clear </button> </ion-col>
+    <ion-col width-20></ion-col>
+  </ion-row>
+</ion-grid>
+</ion-content>
