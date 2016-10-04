@@ -60,11 +60,13 @@ export class InputPage {
   logForm(){
         console.log(this.userinputform.value)
   }*/
+  
+  //[a-zA-Z 0-9]*
   ionViewLoaded() {
     this.userform = this.formBuilder.group({
-      fName: ['', Validators.compose([Validators.minLength(0),Validators.pattern('[a-zA-Z 0-9]*')])],
-      mName: ['', Validators.compose([Validators.minLength(0),Validators.pattern('[a-zA-Z 0-9]*')])],
-      lName: ['', Validators.compose([Validators.minLength(0),Validators.pattern('[a-zA-Z 0-9]*')])],
+      fName: ['', Validators.compose([Validators.minLength(0),Validators.pattern('^[A-Za-z0-9- ]+$')])],
+      mName: ['', Validators.compose([Validators.minLength(0),Validators.pattern('^[A-Za-z0-9- ]+$')])],
+      lName: ['', Validators.compose([Validators.minLength(0),Validators.pattern('^[A-Za-z0-9- ]+$')])],
     });
   }
   logForm(){
@@ -94,9 +96,11 @@ export class InputPage {
   }
   calculateSum(name: string ,position:number) {
       //console.log("Name in calculate sum is "+name);
+      var nameSum = 0;
       for (let entry of name) {
-            //console.log("fName entry value is "+this.values[entry]);
-            if(position == 1 )
+            console.log("fName entry value is "+this.values[entry]);
+            nameSum += this.values[entry];
+            /*if(position == 1 )
                 this.person.fNameValue += this.values[entry];
             else if(position == 2 ) 
                 this.person.mNameValue += this.values[entry];
@@ -105,10 +109,12 @@ export class InputPage {
             }
             else if(position == 0 ) {
                 this.person.totalSum += this.values[entry];
-            }
+            }*/
        
         }
-        console.log("Total Sum is"+this.person.totalSum);
+        console.log("Total Sum for given name -->"+name+" is--> "+this.person.nameSum);
+        return nameSum;
+        
   }
   
 
@@ -132,7 +138,9 @@ export class InputPage {
     this.person.lName = this.userform.controls['lName'].value   ;
     
      if ( (this.person.fName).length){
-         this.calculateSum(this.person.fName.trim(),1);
+         //console.log("Fname is "+this.person.fName);
+         //console.log("Fname is trime "+this.person.fName.replace(/\s+/g, ''));
+         this.person.fNameValue = this.calculateSum(this.person.fName.replace(/\s+/g, '').trim(),1);
          this.person.totalSum += this.person.fNameValue;
          console.log("Total Sum after fName is::"+this.person.totalSum);
          if(this.person.fNameValue >= 10 ){
@@ -140,7 +148,7 @@ export class InputPage {
         }
      }
      if ( (this.person.mName).length){
-         this.calculateSum(this.person.mName.trim(),2);
+         this.person.mNameValue =  this.calculateSum(this.person.mName.replace(/\s+/g, '').trim(),2);
          this.person.totalSum += this.person.mNameValue;
          console.log("Total Sum after mName is::"+this.person.totalSum);
          if(this.person.mNameValue >= 10 ){
@@ -148,7 +156,7 @@ export class InputPage {
          }
      }
      if ( (this.person.lName).length){
-         this.calculateSum(this.person.lName.trim(),3);
+         this.person.lNameValue = this.calculateSum(this.person.lName.replace(/\s+/g, '').trim(),3);
          this.person.totalSum += this.person.lNameValue;
          console.log("Total Sum after lName is::"+this.person.totalSum);
          if(this.person.lNameValue >= 10 ){
@@ -177,9 +185,9 @@ export class InputPage {
   }
   clearInput (){
       this.userform = this.formBuilder.group({
-        fName: ['', Validators.compose([Validators.minLength(0),Validators.pattern('[a-zA-Z 0-9]*')])],
-        mName: ['', Validators.compose([Validators.minLength(0),Validators.pattern('[a-zA-Z 0-9]*')])],
-        lName: ['', Validators.compose([Validators.minLength(0),Validators.pattern('[a-zA-Z 0-9]*')])],
+        fName: ['', Validators.compose([Validators.minLength(0),Validators.pattern('^[A-Za-z0-9- ]+$')])],
+        mName: ['', Validators.compose([Validators.minLength(0),Validators.pattern('[a-z A-Z 0-9]*')])],
+        lName: ['', Validators.compose([Validators.minLength(0),Validators.pattern('[a-z A-Z 0-9]*')])],
         });
   }
   numrlgyBtnClicked() {
