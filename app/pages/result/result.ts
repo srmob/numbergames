@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController,NavParams } from 'ionic-angular';
-
-import {NumbersInfoPage} from '../numbersInfo/NumbersInfo';
+import {ChaldeaninfoPage} from '../chaldeaninfo/chaldeaninfo';
 
 
 @Component({
@@ -59,6 +58,7 @@ export class ResultPage {
   
   showNumberDetails(event) {
     console.log("show NumberDetails Button clicked")
-     this.navCtrl.push(NumbersInfoPage);
+     //this.navCtrl.push(NumbersInfoPage);
+     this.navCtrl.push(ChaldeaninfoPage);
   }
 }
