@@ -14,7 +14,8 @@ import {Validators, FormBuilder } from '@angular/forms';
 export class InputPage {
 
    public person;
-   public values;
+   public chaldeanValues;
+   public pythValues;
    private fValueSum = 0 ;
    private mValueSum = 0 ;
    private lValueSum = 0 ;
@@ -36,17 +37,43 @@ export class InputPage {
         lName : '',
         lNameValue :'',
         totalValueSum: '',
-        totalSum:''
+        totalSum:'',
+        numrlgyMethod:'C'
     }
-    this.values = {
+    /*this.chaldeanValues = {
         "0" : 0, "1" : 1 , "2" : 2, "3" : 3 ,"4" : 4 , "5":5 ,"6":6 ,"7":7 , "8":8 ,"9":9,
         "a" : 1,"A" : 1,"b": 2 , "B": 2,"c": 3 , "C": 3,"d": 4,  "D": 4,
         "e": 5, "E": 5,"F": 8  , "f": 8, "g":3 , "G":3 ,"h":5,"H":5, 
         "i":1, "I":1,"j":1,"J":1,"k":2 , "K":2,"l":3,"L":3 , "m":4,"M":4 ,
         "n" :5 ,"N":5, "o" : 7, "O":7,"p": 8, "P": 8,"q": 1,"Q":1 ,
         "r":2 ,"R":2 ,"s": 3,"S": 3,"t": 4,"T":4 ,"u": 6,"U": 6,
-        "v": 6,"V":6 ,"w":6 ,"W":6 , "x":5 ,"X": 5,"y": 1,"Y":1 ,"z": 7,"Z": 7,
+        "v": 6,"V":6 ,"w":6 ,"W":6 , "x":5 ,"X": 5,"y": 1,"Y":1 ,"z": 7,"Z": 7
+    }*/
+    /*this.pythValues = {
+        "0" : 0, "1" : 1 , "2" : 2, "3" : 3 ,"4" : 4 , "5":5 ,"6":6 ,"7":7 , "8":8 ,"9":9,
+        "a" : 1,"A" : 1,"b": 2 , "B": 2,"c": 3 , "C": 3,"d": 4,  "D": 4,
+        "e": 5, "E": 5,"F": 6  , "f": 6, "g":7, "G":7 ,"h":8,"H":8, 
+        "i":9, "I":9,"j":1,"J":1,"k":2 , "K":2,"l":3,"L":3 , "m":4,"M":4 ,
+        "n" :5 ,"N":5, "o" : 6, "O":6,"p": 7, "P": 7,"q": 8,"Q":8 ,
+        "r":9 ,"R":9 ,"s": 1,"S": 1,"t": 2,"T":2 ,"u": 2,"U": 2,
+        "v": 4,"V":4 ,"w":5 ,"W":5 , "x":6 ,"X": 6,"y": 7,"Y":7 ,"z": 8,"Z": 8
+    }*/
+    this.chaldeanValues = {
+         "0" : 0, "1" : 1, "2" : 2, "3" : 3, "4" : 4, "5" : 5,
+         "6" : 6, "7" : 7, "8" : 8, "9" : 9, "A" : 1, "B" : 2,
+         "C" : 3, "D" : 4, "E" : 5, "F" : 8, "G" : 3, "H" : 5,
+         "I" : 1, "J" : 1, "K" : 2, "L" : 3, "M" : 4, "N" : 5,
+         "O" : 7, "P" : 8, "Q" : 1, "R" : 2, "S" : 3, "T" : 4,
+         "U" : 6, "V" : 6, "W" : 6, "X" : 5, "Y" : 1, "Z" : 7
     }
+    this.pythValues = {
+         "0" : 0, "1" : 1, "2" : 2, "3" : 3, "4" : 4, "5" : 5,
+         "6" : 6, "7" : 7, "8" : 8, "9" : 9, "A" : 1, "B" : 2,
+         "C" : 3, "D" : 4, "E" : 5, "F" : 6, "G" : 7, "H" : 8,
+         "I" : 9, "J" : 1, "K" : 2, "L" : 3, "M" : 4, "N" : 5,
+         "O" : 6, "P" : 7, "Q" : 8, "R" : 9, "S" : 1, "T" : 2,
+         "U" : 2, "V" : 4, "W" : 5, "X" : 6, "Y" : 7, "Z" : 8
+     }
     
     
   }
@@ -97,23 +124,20 @@ export class InputPage {
   calculateSum(name: string ,position:number) {
       //console.log("Name in calculate sum is "+name);
       var nameSum = 0;
-      for (let entry of name) {
-            console.log("fName entry value is "+this.values[entry]);
-            nameSum += this.values[entry];
-            /*if(position == 1 )
-                this.person.fNameValue += this.values[entry];
-            else if(position == 2 ) 
-                this.person.mNameValue += this.values[entry];
-            else if(position == 3 ) {
-                this.person.lNameValue += this.values[entry];
-            }
-            else if(position == 0 ) {
-                this.person.totalSum += this.values[entry];
-            }*/
-       
+      if (this.person.numrlgyMethod == 'C') {
+        for (let entry of name) {
+            console.log("fName entry value is "+this.chaldeanValues[entry]);
+            nameSum += this.chaldeanValues[entry];
         }
-        console.log("Total Sum for given name -->"+name+" is--> "+this.person.nameSum);
-        return nameSum;
+      }else if (this.person.numrlgyMethod == 'P'){
+        for (let entry of name) {
+            console.log("fName entry value  as per Pyth is "+this.pythValues[entry]);
+            nameSum += this.pythValues[entry];
+        }
+
+      }
+      console.log("Total Sum for given name -->"+name+" is--> "+this.person.nameSum);
+      return nameSum;
         
   }
   
@@ -133,13 +157,13 @@ export class InputPage {
 
     //console.log("calculate clicked"+this.values["a"])
 
-    this.person.fName = this.userform.controls['fName'].value   ;
-    this.person.mName = this.userform.controls['mName'].value   ;
-    this.person.lName = this.userform.controls['lName'].value   ;
+    this.person.fName = this.userform.controls['fName'].value.toUpperCase()  ;
+    this.person.mName = this.userform.controls['mName'].value.toUpperCase()   ;
+    this.person.lName = this.userform.controls['lName'].value.toUpperCase()  ;
     
      if ( (this.person.fName).length){
-         //console.log("Fname is "+this.person.fName);
-         //console.log("Fname is trime "+this.person.fName.replace(/\s+/g, ''));
+         console.log("Fname is "+this.person.fName);
+         console.log("Fname is trime "+this.person.fName.replace(/\s+/g, ''));
          this.person.fNameValue = this.calculateSum(this.person.fName.replace(/\s+/g, '').trim(),1);
          this.person.totalSum += this.person.fNameValue;
          console.log("Total Sum after fName is::"+this.person.totalSum);
@@ -181,6 +205,7 @@ export class InputPage {
       let totalValue = this.person.fNameValue + this.person.mNameValue + this.person.lNameValue;
       this.person.totalValueSum = this.addTotal(totalValue)
     //  //this.person.totalSum = this.addTotal(this.addTotal(totalValue))
+     console.log("Method value is :: "+this.person.numrlgyMethod);
       this.navCtrl.push(ResultPage,{user: this.person});
   }
   clearInput (){
@@ -195,11 +220,11 @@ export class InputPage {
       //this.numrlgyMethod = !this.numrlgyMethod;
   }
   chalBtnClicked() {
-      this.numrlgyMethod = 'C';
+      this.person.numrlgyMethod = 'C';
       //console.log("Numerology method is -> "+this.numrlgyMethod);
   }
   pythBtnClicked(){
-      this.numrlgyMethod = 'P';
+      this.person.numrlgyMethod = 'P';
       //console.log("Numerology method PythBtn is -> "+this.numrlgyMethod)
   }
 

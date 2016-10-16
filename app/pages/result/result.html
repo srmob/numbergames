@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar class="force-back-button">
-    <ion-title text-center>
-      Result
+    <ion-title text-center >
+     <h6 appgreen> Result </h6>
     </ion-title>
   </ion-navbar>
 </ion-header>
@@ -38,14 +38,17 @@
       <ion-col center>{{totalText}}</ion-col>
     </ion-row>
   </ion-grid>
-
   
   <ion-footer >
     <ion-toolbar no-shadow>
       <ion-grid>
         <ion-row baseline>
           <ion-col width-20></ion-col>
-          <ion-col width-60><button  block medium  (click)="showNumberDetails()" appgreen>Chaldean Numerology</button></ion-col>
+          <ion-col width-60>
+              <button *ngIf="user.numrlgyMethod === 'C'" block medium  (click)="showNumberDetails()" appgreen>Chaldean Numerology</button>
+              
+              <button *ngIf="user.numrlgyMethod === 'P'" block medium  (click)="showNumberDetails()" appgreen>Pythagorean Numerology</button>
+            </ion-col>
           <ion-col width-20></ion-col>
         </ion-row>
       </ion-grid>

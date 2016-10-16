@@ -109,3 +109,21 @@ gulp.task('sass', customBuildSass);
   </ion-row>
 </ion-grid>
 </ion-content>
+
+
+<li *ngFor="#key of keys();">{{key}}:{{myDict[key]}}</li>
+
+<ion-grid *ngFor="let entry of pythValues | keyValueFilter ;let i = index">
+    <ion-row *ngIf=" (i) % 6 === 0 "> 
+        <ion-col>i is {{pythValues[i]}}</ion-col>
+        <ion-col>{{pythValues[i+1]}}</ion-col>
+        <ion-col>{{entry.value}}</ion-col>
+        <ion-col>{{entry.value}}</ion-col>
+        <ion-col>{{entry.value}}</ion-col>
+        <ion-col>{{entry.value}}</ion-col>
+    </ion-row>
+     <ion-row *ngIf=" (i+1) % 6 === 0 "> 
+       <ion-col>i+1 is {{pythValues[i+1]}}</ion-col>
+     </ion-row>
+    
+  </ion-grid>

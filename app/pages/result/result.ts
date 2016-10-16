@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController,NavParams } from 'ionic-angular';
 import {ChaldeaninfoPage} from '../chaldeaninfo/chaldeaninfo';
+import {PythinfoPage} from '../pythinfo/pythinfo';
 
 
 @Component({
@@ -21,12 +22,15 @@ export class ResultPage {
   public lNameText;
   public mNameText;
   public totalText;
+  public numerologyMethod;
   public numerologyDesc;
 
   constructor(public navCtrl: NavController,private navParams: NavParams) {
-      console.log("Result page entered");
+      
       
       this.user = navParams.get('user');
+      console.log("Result page entered, method is"+this.user.numrlgyMethod);
+
       /*this.firstName = this.user.fName;
       this.fNameValue = this.user.fNameValue;
       this.middleName = this.user.mName;
@@ -54,11 +58,17 @@ export class ResultPage {
       this.mNameText = this.numerologyDesc[this.user.mNameValue];
       this.lNameText = this.numerologyDesc[this.user.lNameValue];
       this.totalText = this.numerologyDesc[this.user.totalValueSum];
+      this.numerologyMethod = this.user.numrlgyMethod;
   }
   
   showNumberDetails(event) {
     console.log("show NumberDetails Button clicked")
      //this.navCtrl.push(NumbersInfoPage);
-     this.navCtrl.push(ChaldeaninfoPage);
+     if ( this.numerologyMethod == 'C') {
+       this.navCtrl.push(ChaldeaninfoPage);
+     }else {
+       this.navCtrl.push(PythinfoPage);
+     }
+     
   }
 }

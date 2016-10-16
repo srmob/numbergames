@@ -7,6 +7,7 @@ import {InputPage} from './pages/input/input';
 
 import {ResultPage} from './pages/result/result';
 
+
 @Component({
   template: '<ion-nav [root]="rootPage"></ion-nav>'
 })
