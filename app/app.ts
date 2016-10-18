@@ -3,13 +3,13 @@ import { ionicBootstrap, Platform } from 'ionic-angular';
 import { StatusBar } from 'ionic-native';
 
 import { HomePage } from './pages/home/home';
-import {InputPage} from './pages/input/input';
-
-import {ResultPage} from './pages/result/result';
+// import {InputPage} from './pages/input/input';
+// import {ResultPage} from './pages/result/result';
 
 
 @Component({
   template: '<ion-nav [root]="rootPage"></ion-nav>'
+  
 })
 export class MyApp {
   rootPage: any = HomePage;
@@ -25,3 +25,21 @@ export class MyApp {
 }
 
 ionicBootstrap(MyApp);
+
+/*
+@NgModule({
+  declarations: [
+    HomePage,
+  ],
+  imports: [
+    IonicModule.forRoot(HomePage,{
+      backButtonText: 'Go Back2',
+    })
+  ],
+  bootstrap: [IonicApp],
+  entryComponents: [
+    HomePage
+  ],
+  providers: []
+})
+export class AppModule {}*/

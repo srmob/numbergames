@@ -1,13 +1,14 @@
 <ion-header>
   <ion-navbar>
     <ion-title text-center >
-      <p appgreen>   Name Numerology Calculator </p>
+      <span appgreen>Name Numerology Calculator </span>
       
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
+  
   <br><br>
   <p>
     •	Only use the name window to input your first name, middle name and last name. You must at least enter one name.
@@ -29,6 +30,7 @@
     <ion-row baseline>
       <ion-col width-20></ion-col>
       <ion-col width-60><button  block medium  (click)="goToInputPage()" appgreen>Get Started</button></ion-col>
+      <!--<ion-col width-60><button  block medium  (click)="showModal()" appgreen>Modal</button></ion-col>-->
       <ion-col width-20></ion-col>
     </ion-row>
    </ion-grid>
@@ -36,7 +38,7 @@
   
 
    <ion-footer >
-    <ion-toolbar no-shadow text-right>v 0.03.04
+    <ion-toolbar no-shadow text-right>v0.03.05
     </ion-toolbar>
   </ion-footer>
   

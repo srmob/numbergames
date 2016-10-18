@@ -157,14 +157,14 @@ export class InputPage {
 
     //console.log("calculate clicked"+this.values["a"])
 
-    this.person.fName = this.userform.controls['fName'].value.toUpperCase()  ;
-    this.person.mName = this.userform.controls['mName'].value.toUpperCase()   ;
-    this.person.lName = this.userform.controls['lName'].value.toUpperCase()  ;
+    this.person.fName = this.userform.controls['fName'].value  ;
+    this.person.mName = this.userform.controls['mName'].value   ;
+    this.person.lName = this.userform.controls['lName'].value  ;
     
      if ( (this.person.fName).length){
          console.log("Fname is "+this.person.fName);
          console.log("Fname is trime "+this.person.fName.replace(/\s+/g, ''));
-         this.person.fNameValue = this.calculateSum(this.person.fName.replace(/\s+/g, '').trim(),1);
+         this.person.fNameValue = this.calculateSum(this.person.fName.replace(/\s+/g, '').toUpperCase().trim(),1);
          this.person.totalSum += this.person.fNameValue;
          console.log("Total Sum after fName is::"+this.person.totalSum);
          if(this.person.fNameValue >= 10 ){
@@ -172,7 +172,7 @@ export class InputPage {
         }
      }
      if ( (this.person.mName).length){
-         this.person.mNameValue =  this.calculateSum(this.person.mName.replace(/\s+/g, '').trim(),2);
+         this.person.mNameValue =  this.calculateSum(this.person.mName.replace(/\s+/g, '').toUpperCase().trim(),2);
          this.person.totalSum += this.person.mNameValue;
          console.log("Total Sum after mName is::"+this.person.totalSum);
          if(this.person.mNameValue >= 10 ){
@@ -180,7 +180,7 @@ export class InputPage {
          }
      }
      if ( (this.person.lName).length){
-         this.person.lNameValue = this.calculateSum(this.person.lName.replace(/\s+/g, '').trim(),3);
+         this.person.lNameValue = this.calculateSum(this.person.lName.replace(/\s+/g, '').toUpperCase().trim(),3);
          this.person.totalSum += this.person.lNameValue;
          console.log("Total Sum after lName is::"+this.person.totalSum);
          if(this.person.lNameValue >= 10 ){

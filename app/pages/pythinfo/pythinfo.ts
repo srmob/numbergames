@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController,ViewController} from 'ionic-angular';
 
 /*
   Generated class for the PythagoreaninfoPage page.
@@ -13,13 +13,15 @@ import { NavController } from 'ionic-angular';
 export class PythinfoPage {
   private pythValues;
   static get parameters() {
-    return [[NavController]];
+    return [[NavController],[ViewController]];
   }
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController,public viewCtrl: ViewController) {
     this.navCtrl = navCtrl;
     console.log("Pyth Numbers Info page entered");
 
   }
-  
+  dismiss() {
+    this.viewCtrl.dismiss();
+  }
 }

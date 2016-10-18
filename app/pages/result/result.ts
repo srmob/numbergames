@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController,NavParams } from 'ionic-angular';
+import { NavController,NavParams,ModalController} from 'ionic-angular';
 import {ChaldeaninfoPage} from '../chaldeaninfo/chaldeaninfo';
 import {PythinfoPage} from '../pythinfo/pythinfo';
 
@@ -25,7 +25,7 @@ export class ResultPage {
   public numerologyMethod;
   public numerologyDesc;
 
-  constructor(public navCtrl: NavController,private navParams: NavParams) {
+  constructor(public navCtrl: NavController,private navParams: NavParams,public modalCtrl: ModalController) {
       
       
       this.user = navParams.get('user');
@@ -65,9 +65,13 @@ export class ResultPage {
     console.log("show NumberDetails Button clicked")
      //this.navCtrl.push(NumbersInfoPage);
      if ( this.numerologyMethod == 'C') {
-       this.navCtrl.push(ChaldeaninfoPage);
+       //this.navCtrl.push(ChaldeaninfoPage);
+       let modal = this.modalCtrl.create(ChaldeaninfoPage);
+        modal.present();
      }else {
-       this.navCtrl.push(PythinfoPage);
+       //this.navCtrl.push(PythinfoPage);
+       let modal = this.modalCtrl.create(PythinfoPage);
+        modal.present();
      }
      
   }
