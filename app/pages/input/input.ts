@@ -1,11 +1,15 @@
 import { Component } from '@angular/core';
-import { NavController,NavParams} from 'ionic-angular';
+import { NavController,NavParams,ViewController,Platform,AlertController} from 'ionic-angular';
+import {Validators, FormBuilder,FormControl,FormGroup} from '@angular/forms';
+
+import { Control, ControlGroup} from '@angular/common';
 
 import {ResultPage} from '../result/result';
+import {InAppPurchase} from 'ionic-native';
 
-import {Validators, FormBuilder } from '@angular/forms';
+//import {AdMob} from 'ionic-native';
 
-//import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+declare var AdMob: any;
 
 @Component({
   templateUrl: 'build/pages/input/input.html'
@@ -22,13 +26,74 @@ export class InputPage {
    private totalValueSum = 0;
    private totalSum = 0;
    private paidAppBtn: boolean = false; // For free app Chaldean is available else Pythagorean
-   private numrlgyMethod: string = "C"; // For  Chaldean (C)  else {false} for Pythagorean
+   private numrlgyMethod: string = "C"; // For  Chaldean (C)  else {P} for Pythagorean
   // private userinputform;
   public userform;
+  private admobId: any;
+   private IAP;
+
+  fName:FormControl;
+  mName:FormControl;
+  lName:FormControl;
+
+  /* Admob related variables */
+   private banner_pub_id_android: string;
+   private interstatial_pub_id_android: string;
+   private banner_pub_id_ios: string;
+   private interstatial_pub_id_ios: string;
+
+  constructor(public navCtrl: NavController, private platform: Platform,private navParams: NavParams,private formBuilder: FormBuilder,public alertCtrl: AlertController) {
+      
+      console.log("Input  page entered:-->");
+      console.log("navigation views count  at input page is "+this.navCtrl.length());
+
+      this.IAP = {
+        list: [ "adfree"]
+      };
+      //webtalk445 account details for admob Android
+      /*this.banner_pub_id_android = 'ca-app-pub-1542644798135048/9464427615';
+      this.interstatial_pub_id_android = 'ca-app-pub-1542644798135048/9464427615'*/
+       //Tureya admob details - Android
+      this.banner_pub_id_android = 'ca-app-pub-4088114868017530/8693649605';
+      this.interstatial_pub_id_android = 'ca-app-pub-4088114868017530/8693649605';
 
 
-  constructor(public navCtrl: NavController, private navParams: NavParams,private formBuilder: FormBuilder) {
-      console.log("Input  page entered");
+       //webtalk445 account details for admob ios
+      /* this.banner_pub_id_ios =  'ca-app-pub-1542644798135048/3573854418';
+      this.interstatial_pub_id_ios = 'ca-app-pub-1542644798135048/3573854418';*/
+
+      //Tureya admob details - ios
+      this.banner_pub_id_ios =  'ca-app-pub-4088114868017530/3966390005';
+      this.interstatial_pub_id_ios = 'ca-app-pub-4088114868017530/3966390005';
+      
+        //To be uncommented for Final release
+        if(/(android)/i.test(navigator.userAgent)) {
+            this.admobId = {
+                banner: this.banner_pub_id_android,
+                interstitial: this.interstatial_pub_id_android
+            };
+        } else if (/(ipod|iphone|ipad)/i.test(navigator.userAgent)) { // for ios
+                this.admobId = {
+                    banner: this.banner_pub_id_ios,
+                    interstitial: this.interstatial_pub_id_ios
+                };
+        }
+        this.platform.ready().then(() => {
+            console.log(" platform ready event in input.ts"+AdMob);
+                if(AdMob)  {
+                    console.log("Admob exists and running, banne ad id"+this.admobId.banner)
+                    AdMob.createBanner(
+                        {
+                        adId:this.admobId.banner,
+                        isTesting:true,//comment this out before publishing the app,
+                        position:AdMob.AD_POSITION.BOTTOM_CENTER,
+                        autoShow:true
+                        } 
+                    );
+                }
+                    
+        });
+
       this.person = {
         fName : '',
         fNameValue :'',
@@ -39,25 +104,8 @@ export class InputPage {
         totalValueSum: '',
         totalSum:'',
         numrlgyMethod:'C'
-    }
-    /*this.chaldeanValues = {
-        "0" : 0, "1" : 1 , "2" : 2, "3" : 3 ,"4" : 4 , "5":5 ,"6":6 ,"7":7 , "8":8 ,"9":9,
-        "a" : 1,"A" : 1,"b": 2 , "B": 2,"c": 3 , "C": 3,"d": 4,  "D": 4,
-        "e": 5, "E": 5,"F": 8  , "f": 8, "g":3 , "G":3 ,"h":5,"H":5, 
-        "i":1, "I":1,"j":1,"J":1,"k":2 , "K":2,"l":3,"L":3 , "m":4,"M":4 ,
-        "n" :5 ,"N":5, "o" : 7, "O":7,"p": 8, "P": 8,"q": 1,"Q":1 ,
-        "r":2 ,"R":2 ,"s": 3,"S": 3,"t": 4,"T":4 ,"u": 6,"U": 6,
-        "v": 6,"V":6 ,"w":6 ,"W":6 , "x":5 ,"X": 5,"y": 1,"Y":1 ,"z": 7,"Z": 7
-    }*/
-    /*this.pythValues = {
-        "0" : 0, "1" : 1 , "2" : 2, "3" : 3 ,"4" : 4 , "5":5 ,"6":6 ,"7":7 , "8":8 ,"9":9,
-        "a" : 1,"A" : 1,"b": 2 , "B": 2,"c": 3 , "C": 3,"d": 4,  "D": 4,
-        "e": 5, "E": 5,"F": 6  , "f": 6, "g":7, "G":7 ,"h":8,"H":8, 
-        "i":9, "I":9,"j":1,"J":1,"k":2 , "K":2,"l":3,"L":3 , "m":4,"M":4 ,
-        "n" :5 ,"N":5, "o" : 6, "O":6,"p": 7, "P": 7,"q": 8,"Q":8 ,
-        "r":9 ,"R":9 ,"s": 1,"S": 1,"t": 2,"T":2 ,"u": 2,"U": 2,
-        "v": 4,"V":4 ,"w":5 ,"W":5 , "x":6 ,"X": 6,"y": 7,"Y":7 ,"z": 8,"Z": 8
-    }*/
+    };
+    
     this.chaldeanValues = {
          "0" : 0, "1" : 1, "2" : 2, "3" : 3, "4" : 4, "5" : 5,
          "6" : 6, "7" : 7, "8" : 8, "9" : 9, "A" : 1, "B" : 2,
@@ -65,7 +113,7 @@ export class InputPage {
          "I" : 1, "J" : 1, "K" : 2, "L" : 3, "M" : 4, "N" : 5,
          "O" : 7, "P" : 8, "Q" : 1, "R" : 2, "S" : 3, "T" : 4,
          "U" : 6, "V" : 6, "W" : 6, "X" : 5, "Y" : 1, "Z" : 7
-    }
+    };
     this.pythValues = {
          "0" : 0, "1" : 1, "2" : 2, "3" : 3, "4" : 4, "5" : 5,
          "6" : 6, "7" : 7, "8" : 8, "9" : 9, "A" : 1, "B" : 2,
@@ -73,36 +121,45 @@ export class InputPage {
          "I" : 9, "J" : 1, "K" : 2, "L" : 3, "M" : 4, "N" : 5,
          "O" : 6, "P" : 7, "Q" : 8, "R" : 9, "S" : 1, "T" : 2,
          "U" : 2, "V" : 4, "W" : 5, "X" : 6, "Y" : 7, "Z" : 8
-     }
+     };
     
-    
+   //this.ionViewLoaded();
   }
-  /*ionViewLoaded() {
-        this.userinputform = this.formBuilder.group({
-            fName: ['', Validators.required],
-            mName: ['' ],
-            lName: ['' ],
-        });
-    }
-  logForm(){
-        console.log(this.userinputform.value)
-  }*/
   
-  //[a-zA-Z 0-9]*
   ionViewLoaded() {
-    this.userform = this.formBuilder.group({
-      fName: ['', Validators.compose([Validators.minLength(0),Validators.pattern('^[A-Za-z0-9- ]+$')])],
-      mName: ['', Validators.compose([Validators.minLength(0),Validators.pattern('^[A-Za-z0-9- ]+$')])],
-      lName: ['', Validators.compose([Validators.minLength(0),Validators.pattern('^[A-Za-z0-9- ]+$')])],
-    });
+      console.log("ionicview loaded");
+        this.fName = new FormControl('', Validators.compose([Validators.minLength(0),Validators.pattern('^[A-Za-z0-9- ]+$')]));  
+        this.mName = new FormControl('', Validators.compose([Validators.minLength(0),Validators.pattern('^[A-Za-z0-9- ]+$')]));  
+        this.lName = new FormControl('', Validators.compose([Validators.minLength(0),Validators.pattern('^[A-Za-z0-9- ]+$')])); 
+        /*this.userform = this.formBuilder.group({
+            fName: this.fName,
+            mName: this.mName,
+            lName: this.lName
+        });*/
+        this.userform = this.formBuilder.group({
+            fName: this.fName,
+            mName: this.mName,
+            lName: this.lName
+        });
+        
+        /*this.userform = new FormGroup({
+            fName: new FormControl('', Validators.compose([Validators.minLength(0),Validators.pattern('^[A-Za-z0-9- ]+$')])),
+            mName: new FormControl('', Validators.compose([Validators.minLength(0),Validators.pattern('^[A-Za-z0-9- ]+$')])),
+            lName: new FormControl('', Validators.compose([Validators.minLength(0),Validators.pattern('^[A-Za-z0-9- ]+$')])),
+        });
+        console.log(this.userform.value);
+        console.log(this.userform.status);*/
+        
+        //userform.pr({fName:'as',mName:'ad'})
   }
-  logForm(){
+  
+  /*logForm(){
     console.log(this.userform.value)
     this.person.fName = this.userform.controls['fName'].value   ;
     this.person.mName = this.userform.controls['mName'].value   ;
     this.person.lName = this.userform.controls['lName'].value   ;
     console.log("this person is "+JSON.stringify(this.person));
-  }
+  }*/
   addTotal(value){
       var sum = 0;
       console.log("Value passed is"+value)
@@ -143,6 +200,7 @@ export class InputPage {
   
 
   showResult() {
+      console.log(this.userform.value);
     this.person.fNameValue = 0 ;
     this.person.lNameValue = 0 ; 
     this.person.mNameValue = 0 ; 
@@ -160,7 +218,7 @@ export class InputPage {
     this.person.fName = this.userform.controls['fName'].value  ;
     this.person.mName = this.userform.controls['mName'].value   ;
     this.person.lName = this.userform.controls['lName'].value  ;
-    
+    console.log("Fname is "+this.person.fName);
      if ( (this.person.fName).length){
          console.log("Fname is "+this.person.fName);
          console.log("Fname is trime "+this.person.fName.replace(/\s+/g, ''));
@@ -204,16 +262,13 @@ export class InputPage {
      //}
       let totalValue = this.person.fNameValue + this.person.mNameValue + this.person.lNameValue;
       this.person.totalValueSum = this.addTotal(totalValue)
-    //  //this.person.totalSum = this.addTotal(this.addTotal(totalValue))
-     console.log("Method value is :: "+this.person.numrlgyMethod);
       this.navCtrl.push(ResultPage,{user: this.person});
   }
+  
   clearInput (){
-      this.userform = this.formBuilder.group({
-        fName: ['', Validators.compose([Validators.minLength(0),Validators.pattern('^[A-Za-z0-9- ]+$')])],
-        mName: ['', Validators.compose([Validators.minLength(0),Validators.pattern('[a-z A-Z 0-9]*')])],
-        lName: ['', Validators.compose([Validators.minLength(0),Validators.pattern('[a-z A-Z 0-9]*')])],
-        });
+      this.userform.controls['fName'].updateValue('');
+      this.userform.controls['mName'].updateValue('');
+      this.userform.controls['lName'].updateValue('');
   }
   numrlgyBtnClicked() {
       this.paidAppBtn = true;
@@ -224,7 +279,67 @@ export class InputPage {
       //console.log("Numerology method is -> "+this.numrlgyMethod);
   }
   pythBtnClicked(){
-      this.person.numrlgyMethod = 'P';
+        
+        InAppPurchase.getProducts(['com.tureya.numerology.adfree'])
+            .then(function (products) {
+                console.log('Products are '+JSON.stringify(products));
+                /*
+                [{ productId: 'com.yourapp.prod1', 'title': '...', description: '...', price: '...' }, ...]
+                */
+            })
+            .catch(function (err) {
+                console.log('Error in InAppPurchase getting products---> '+JSON.stringify(err));
+            });
+        //    var products = InAppPurchase.getProducts(['com.tureya.numerology.adfree']);
+        //   console.log('products are '+JSON.stringify(products));
+        console.log("get products is done ")
+        InAppPurchase.buy('com.tureya.numerology.adfree').then(function (data) {
+                console.log('Data from apple app store is '+JSON.stringify(data));
+                let alert = this.alertCtrl.create({
+                    title: 'Full version added!',
+                    subTitle: 'Congratulations !! Full version includes Pythagorean numerology method and its adfree!!!',
+                    buttons: ['OK']
+                });
+                alert.present();
+                if(AdMob)  {
+                    AdMob.hideBanner();
+                    console.log('Admob is disabled , all banners hidden');
+                }
+                this.person.numrlgyMethod = 'P';
+                    /*
+                    {
+                        transactionId: ...
+                        receipt: ...
+                        signature: ...
+                    }
+                    */
+                })
+                .catch(function (err) {
+                    this.person.numrlgyMethod = 'C';
+                    console.log("Error in buy InAppPurchase"+JSON.stringify(err));
+                });
+      /*let alert = this.alertCtrl.create({
+                title: 'Full Version!',
+                subTitle: 'Full version includes Pythagorean numerology method and its adfree!!!',
+                buttons: [
+                    {
+                        text: 'Disagree',
+                        handler: () => {
+                            console.log('Disagree clicked');
+                        }
+                    },
+                    {
+                        text: 'Agree',
+                        handler: () => {
+                            console.log('Agree clicked');
+                            
+                        }
+                    }
+                ]
+       });
+       alert.present();*/
+
+       
       //console.log("Numerology method PythBtn is -> "+this.numrlgyMethod)
   }
 

@@ -5,7 +5,7 @@ import { StatusBar } from 'ionic-native';
 import { HomePage } from './pages/home/home';
 // import {InputPage} from './pages/input/input';
 // import {ResultPage} from './pages/result/result';
-
+import {  } from 'ionic-angular';
 
 @Component({
   template: '<ion-nav [root]="rootPage"></ion-nav>'
@@ -24,7 +24,9 @@ export class MyApp {
   }
 }
 
-ionicBootstrap(MyApp);
+ionicBootstrap(MyApp,null,{
+  backButtonText: 'Back'
+});
 
 /*
 @NgModule({

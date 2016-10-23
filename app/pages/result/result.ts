@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController,NavParams,ModalController} from 'ionic-angular';
+import { NavController,NavParams,ModalController,ViewController} from 'ionic-angular';
 import {ChaldeaninfoPage} from '../chaldeaninfo/chaldeaninfo';
 import {PythinfoPage} from '../pythinfo/pythinfo';
 
@@ -25,11 +25,13 @@ export class ResultPage {
   public numerologyMethod;
   public numerologyDesc;
 
-  constructor(public navCtrl: NavController,private navParams: NavParams,public modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController,private navParams: NavParams,public modalCtrl: ModalController,private view:ViewController) {
       
       
       this.user = navParams.get('user');
-      console.log("Result page entered, method is"+this.user.numrlgyMethod);
+      //console.log("Result page entered, Nav back view is"+JSON.stringify(this.navCtrl.getPrevious(view)));
+      console.log("Result page entered, Nav back view is"+this.navCtrl.getPrevious(view));
+      console.log("navigation views count  at result page is "+this.navCtrl.length());
 
       /*this.firstName = this.user.fName;
       this.fNameValue = this.user.fNameValue;
@@ -64,15 +66,15 @@ export class ResultPage {
   showNumberDetails(event) {
     console.log("show NumberDetails Button clicked")
      //this.navCtrl.push(NumbersInfoPage);
-     if ( this.numerologyMethod == 'C') {
-       //this.navCtrl.push(ChaldeaninfoPage);
-       let modal = this.modalCtrl.create(ChaldeaninfoPage);
-        modal.present();
-     }else {
+    //  if ( this.numerologyMethod == 'C') {
+    //    //this.navCtrl.push(ChaldeaninfoPage);
+    //    let modal = this.modalCtrl.create(ChaldeaninfoPage);
+    //     modal.present();
+    //  }else {
        //this.navCtrl.push(PythinfoPage);
        let modal = this.modalCtrl.create(PythinfoPage);
         modal.present();
-     }
+     
      
   }
 }

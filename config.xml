@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.ionicframework.numbergames983487" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>numbergames</name>
-  <description>Number numerology based application.</description>
-  <author email="sai26025" href="http://ionicframework.com/">Tureya Apps</author>
+<widget id="com.tureya.numerology" version="0.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  <name>Name Numerology Calculator</name>
+  <description>
+    Name Numerology Calculator calculates the numerical value of your name. According to numerology, the numerical value of your name influences areas of your personal and professional development. 
+    Finding out your name number according to numerology can tell you about yourself.
+    There are two Numerology systems used to calculate name number: Pythagorean Numerology and Chaldean Numerology. 
+    The Chaldean Numerology is older, but the Pythagorean Numerology is modern and popular.
+    The free version only offers one option, which is "Chaldean Numerology", while paid version offers both of these as well as allows to input number as part of your name.
+  </description>
+  <author email="admin@tureya.co.nz" href="http://www.tureya.co.nz">Tureya Limited</author>
   <content src="index.html"/>
   <access origin="*"/>
   <allow-intent href="http://*/*"/>

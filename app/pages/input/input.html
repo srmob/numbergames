@@ -1,5 +1,5 @@
 <ion-header no-shadow>
-  <ion-navbar>
+  <ion-navbar class="force-back-button">
     <ion-title text-center>
        <span appgreen>Name Numerology Calculator</span>
     </ion-title>
@@ -7,28 +7,34 @@
 </ion-header>
 
 <ion-content>
-  <form [formGroup]="userform" (ngSubmit)="showResult()">
+  <form [formGroup]="userform">
       <ion-item>
-        <ion-label floating>First Name</ion-label>
-        <ion-input type="text" formControlName="fName" clearInput [class.invalid]="!userform.controls.fName.valid"></ion-input>
+        <ion-label floating appgreen>First Name</ion-label>
+        <ion-input type="text" formControlName="fName" [class.invalid]="!userform.controls.fName.valid" clearInput></ion-input>
       </ion-item>
       <ion-item *ngIf="!userform.controls.fName.valid">
-          <p>Please enter a valid first name.</p>
+          <p>Please enter a valid First name.</p>
       </ion-item>
       <ion-item>
-        <ion-label floating>Middle Name</ion-label>
-        <ion-input type="text" formControlName="mName" clearInput></ion-input>
+        <ion-label floating appgreen>Middle Name</ion-label>
+        <ion-input type="text" formControlName="mName" [class.invalid]="!userform.controls.mName.valid" clearInput></ion-input>
+      </ion-item>
+      <ion-item *ngIf="!userform.controls.mName.valid">
+          <p>Please enter a valid Middle name.</p>
       </ion-item>
       <ion-item>
-        <ion-label floating>Last Name</ion-label>
-        <ion-input type="text" formControlName="lName" clearInput></ion-input>
+        <ion-label floating appgreen>Last Name</ion-label>
+        <ion-input type="text" formControlName="lName" [class.invalid]="!userform.controls.lName.valid" clearInput></ion-input>
+      </ion-item>
+      <ion-item *ngIf="!userform.controls.lName.valid">
+          <p>Please enter a valid last name.</p>
       </ion-item>
 
       <ion-grid>
         <ion-row no-padding>
           <ion-col no-padding></ion-col>
-          <ion-col no-padding><button type=button class="borders-button" [class.button-appgreen]="person.numrlgyMethod == 'C'" [class.button-clear]="person.numrlgyMethod == 'P'"  (click)="chalBtnClicked()"> Chaldean </button></ion-col>
-          <ion-col no-padding ><button type=button class="borders-button" [class.button-appgreen]="person.numrlgyMethod == 'P'" [class.button-clear]="person.numrlgyMethod == 'C'" (click)="pythBtnClicked()" > Pythagorean </button></ion-col>
+          <ion-col no-padding><button type="button" class="borders-button" [class.button-appgreen]="person.numrlgyMethod == 'C'" [class.button-clear]="person.numrlgyMethod == 'P'"  (click)="chalBtnClicked()"> Chaldean </button></ion-col>
+          <ion-col no-padding ><button type="button" class="borders-button" [class.button-appgreen]="person.numrlgyMethod == 'P'" [class.button-clear]="person.numrlgyMethod == 'C'" (click)="pythBtnClicked()" > Pythagorean </button></ion-col>
           <ion-col no-padding ></ion-col>
         </ion-row>
       </ion-grid>
@@ -37,7 +43,8 @@
           <ion-col width-20></ion-col>
           <ion-col width-60>
             <div >
-              <button  end  block medium appgreen  (click)="showResult()" type="submit" [disabled]="!userform.valid || (userform.controls.fName.value.length == 0 && userform.controls.mName.value.length == 0 && userform.controls.lName.value.length == 0)"> Calculate </button>
+              <button  block medium appgreen  (click)="showResult()" type="submit" [disabled]="(!userform.valid) || (userform.controls.fName.value.length == 0 && userform.controls.mName.value.length == 0 && userform.controls.lName.value.length == 0)"> Calculate </button>
+             
             </div>
             </ion-col>
           <!--<ion-col width-60><button end  block medium  (click)="showResult()" appgreen type="submit" [disabled]="!userinput.valid"> Calculate </button></ion-col>-->
@@ -45,7 +52,7 @@
         </ion-row>
         <ion-row baseline>
           <ion-col width-20></ion-col>
-          <ion-col width-60><button block medium danger type=button (click)="clearInput()"> Clear </button> </ion-col>
+          <ion-col width-60><button block medium danger type="button" (click)="clearInput()"> Clear </button> </ion-col>
           <ion-col width-20></ion-col>
         </ion-row>
       </ion-grid>
