@@ -6,10 +6,12 @@ import { HomePage } from './pages/home/home';
 // import {InputPage} from './pages/input/input';
 // import {ResultPage} from './pages/result/result';
 import {  } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
+import {Injectable} from "@angular/core";
 
 @Component({
-  template: '<ion-nav [root]="rootPage"></ion-nav>'
-  
+  template: '<ion-nav [root]="rootPage"></ion-nav>',
+  providers: [Storage]
 })
 export class MyApp {
   rootPage: any = HomePage;

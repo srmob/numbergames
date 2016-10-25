@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController,NavParams,ViewController,Platform,AlertController} from 'ionic-angular';
+import { NavController,NavParams,ViewController,Platform,AlertController,LoadingController} from 'ionic-angular';
 import {Validators, FormBuilder,FormControl,FormGroup} from '@angular/forms';
 
 import { Control, ControlGroup} from '@angular/common';
@@ -7,12 +7,16 @@ import { Control, ControlGroup} from '@angular/common';
 import {ResultPage} from '../result/result';
 import {InAppPurchase} from 'ionic-native';
 
+import{UserData} from '../../providers/user-data';
+import{AdInfo} from '../../providers/ad-info';
+
 //import {AdMob} from 'ionic-native';
 
-declare var AdMob: any;
+//declare var AdMob: any;
 
 @Component({
-  templateUrl: 'build/pages/input/input.html'
+  templateUrl: 'build/pages/input/input.html',
+  providers: [UserData,AdInfo]
   
 })
 export class InputPage {
@@ -29,31 +33,58 @@ export class InputPage {
    private numrlgyMethod: string = "C"; // For  Chaldean (C)  else {P} for Pythagorean
   // private userinputform;
   public userform;
-  private admobId: any;
+  //private admobId: any;
 
   fName:FormControl;
   mName:FormControl;
   lName:FormControl;
 
   /* Admob related variables */
-   private banner_pub_id_android: string;
+   /*private banner_pub_id_android: string;
    private interstatial_pub_id_android: string;
    private banner_pub_id_ios: string;
    private interstatial_pub_id_ios: string;
-   private setPyth : boolean;
+   private setPyth : boolean;*/
+   public appPurchased:boolean;
+   public free_tries: number;
+   public max_tries: number;
+   private showBuyButton : boolean;
 
-  constructor(public navCtrl: NavController, private platform: Platform,private navParams: NavParams,private formBuilder: FormBuilder,public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, private platform: Platform,private navParams: NavParams,
+              private formBuilder: FormBuilder,public alertCtrl: AlertController,
+              public userData: UserData,public loadingCtrl: LoadingController,public adInfo:AdInfo) {
       
       console.log("Input  page entered:-->");
       console.log("navigation views count  at input page is "+this.navCtrl.length());
+      this.userData.hasPurchased().then((value) =>{
+            this.appPurchased = value;
+            if(this.appPurchased){
+                this.adInfo.hideBanner();
+            }else{
+                this.adInfo.showBanner();
+            }
+      });
+      this.max_tries = this.userData.TRIAL_ALLOWED;
+      //this.userData.setFreeCounter(0);
+      this.userData.getCount().then((value) =>{
+            console.log("Value in cosntr ----> "+value);
+            this.free_tries = value;
+            if (value >= this.userData.TRIAL_ALLOWED && !this.appPurchased) {
+                this.showBuyButton = true;
+            }else {
+                this.showBuyButton = false;
+            }
+      });
+      
 
+      //this.userData.setFreeCounter(0);
       //this.setPyth = false;
       //webtalk445 account details for admob Android
       /*this.banner_pub_id_android = 'ca-app-pub-1542644798135048/9464427615';
       this.interstatial_pub_id_android = 'ca-app-pub-1542644798135048/9464427615'*/
        //Tureya admob details - Android
-      this.banner_pub_id_android = 'ca-app-pub-4088114868017530/8693649605';
-      this.interstatial_pub_id_android = 'ca-app-pub-4088114868017530/8693649605';
+    //   this.banner_pub_id_android = 'ca-app-pub-4088114868017530/8693649605';
+    //   this.interstatial_pub_id_android = 'ca-app-pub-4088114868017530/8693649605';
 
 
        //webtalk445 account details for admob ios
@@ -61,11 +92,11 @@ export class InputPage {
       this.interstatial_pub_id_ios = 'ca-app-pub-1542644798135048/3573854418';*/
 
       //Tureya admob details - ios
-      this.banner_pub_id_ios =  'ca-app-pub-4088114868017530/3966390005';
-      this.interstatial_pub_id_ios = 'ca-app-pub-4088114868017530/3966390005';
+    //   this.banner_pub_id_ios =  'ca-app-pub-4088114868017530/3966390005';
+    //   this.interstatial_pub_id_ios = 'ca-app-pub-4088114868017530/3966390005';
       
         //To be uncommented for Final release
-        if(/(android)/i.test(navigator.userAgent)) {
+       /* if(/(android)/i.test(navigator.userAgent)) {
             this.admobId = {
                 banner: this.banner_pub_id_android,
                 interstitial: this.interstatial_pub_id_android
@@ -91,7 +122,7 @@ export class InputPage {
                 }
                     
         });
-
+        */
       this.person = {
         fName : '',
         fNameValue :'',
@@ -123,7 +154,25 @@ export class InputPage {
     
    //this.ionViewLoaded();
   }
-  
+  ionViewDidEnter(){
+    this.userData.getCount().then((value) =>{
+        console.log("Value in  ionViewDidEnter loaded ----> "+value);
+        this.free_tries = value;
+        if (value >= this.userData.TRIAL_ALLOWED && !this.appPurchased) {
+            this.showBuyButton = true;
+        }else {
+            this.showBuyButton = false;
+        }
+    });
+    this.userData.hasPurchased().then((value) =>{
+            this.appPurchased = value;
+            if(this.appPurchased){
+                this.adInfo.hideBanner();
+            }else{
+                this.adInfo.showBanner();
+            }
+      }); 
+  }
   ionViewLoaded() {
       console.log("ionicview loaded");
         this.fName = new FormControl('', Validators.compose([Validators.minLength(0),Validators.pattern('^[A-Za-z0-9- ]+$')]));  
@@ -140,6 +189,8 @@ export class InputPage {
             lName: this.lName
         });
         
+
+      
         /*this.userform = new FormGroup({
             fName: new FormControl('', Validators.compose([Validators.minLength(0),Validators.pattern('^[A-Za-z0-9- ]+$')])),
             mName: new FormControl('', Validators.compose([Validators.minLength(0),Validators.pattern('^[A-Za-z0-9- ]+$')])),
@@ -258,7 +309,14 @@ export class InputPage {
         // console.log("lName value is after:: "+this.person.lNameValue);
      //}
       let totalValue = this.person.fNameValue + this.person.mNameValue + this.person.lNameValue;
-      this.person.totalValueSum = this.addTotal(totalValue)
+      this.person.totalValueSum = this.addTotal(totalValue);
+      if(!this.appPurchased){
+            this.userData.getCount().then((value) =>{
+                console.log("value from getter is =>"+value+"free trial count is--> "+this.free_tries)
+                this.userData.setFreeCounter(value+1);
+            });
+      }
+      
       this.navCtrl.push(ResultPage,{user: this.person});
   }
   
@@ -454,10 +512,7 @@ export class InputPage {
       this.pythBtnClicked1().then((data) =>{
           this.person.numrlgyMethod = data;
           console.log('data in pyth1 JSON is '+JSON.stringify(data));
-          if(AdMob)  {
-                AdMob.hideBanner();
-                console.log('Admob is disabled , all banners hidden');
-            }
+          
       }).catch(function (err) {
           this.person.numrlgyMethod = err;
         console.log("Error in pyth1"+JSON.stringify(err));
@@ -467,58 +522,84 @@ export class InputPage {
         console.log("Pyth Button Clicked and after value is "+this.person.numrlgyMethod);
   }
   pythBtnClicked(){
-      
-      InAppPurchase.getProducts(['com.tureya.numerology.adfree','com.tureya.numerology.adfree_one'])
-            .then(function (products) {
-                    console.log('Products are '+JSON.stringify(products));
-            })
-            .catch(function (err) {
-                console.log('Error in InAppPurchase getting products---> '+JSON.stringify(err));
-            });
-      
-      
-      
-     /* InAppPurchase.restorePurchases()
-            .then((restoreData)=>{
-                console.log("Product IDs captured from restorePurchases is "+JSON.stringify(restoreData));
-                console.log("Product ID captured from restorePurchases is "+restoreData[0].productId);
-                console.log("Product ID captured from restorePurchases is "+restoreData[1].productId);
-                console.log("Includes  "+restoreData.includes("com.tureya.numerology.adfree"));
-                console.log("Includes one "+restoreData.includes("com.tureya.numerology.adfree.one"));
-                if (!(restoreData[0].productId === "com.tureya.numerology.adfree.one")) {
-                    console.log(" Product not bought,buy the ad free product from app store");
+     // Not Purchased
+      if (this.appPurchased){
+          console.log('Product purchased already '+this.appPurchased);
+          this.person.numrlgyMethod = 'P';
+      }else{
 
-                    InAppPurchase.buy('com.tureya.numerology.adfree.one')
-                        .then( (buyData) => {
-                            console.log('Data from apple app store is '+JSON.stringify(buyData));
-                            console.log(' method buy  '+this.person.numrlgyMethod);
-                            this.person.numrlgyMethod = 'P';
-                            let alert = this.alertCtrl.create({
-                                        title: 'Pythagorean feature unlocked!',
-                                        subTitle: 'Congratulations!!!',
-                                        buttons: ['OK']
-                                        });
-                            alert.present();
+        let confirm = this.alertCtrl.create({
+            title: 'Full Version',
+            message: 'Please download this feature to access application adfree and unlimited calculations using both technique',
+            buttons: [
+                {
+                text: 'Disagree',
+                handler: () => {
+                    console.log('Disagree clicked');
+                    this.person.numrlgyMethod = 'C';
+                    }
+                },
+                {
+                text: 'Agree',
+                handler: () => {
+                    console.log('Agree clicked');
+                    InAppPurchase.getProducts(['com.tureya.numerology.adfree','com.tureya.numerology.adfreeone'])
+                        .then(function (products) {
+                                console.log('Products are '+JSON.stringify(products));
                         })
-                        .catch( (err) => {
-                            console.log(' method buy error  '+this.person.numrlgyMethod);   
-                            this.person.numrlgyMethod = 'C';
-                            let alert = this.alertCtrl.create({
-                                        title: 'Error!',
-                                        subTitle: 'Something went wrong!!!',
-                                        buttons: ['OK']
+                        .catch(function (err) {
+                            console.log('Error in InAppPurchase getting products---> '+JSON.stringify(err));
+                        });
+
+                    InAppPurchase.restorePurchases()
+                        .then((restoreData)=>{
+                            
+                            console.log("Product ID captured from restorePurchases is "+restoreData[0].productId);
+                            if (!(restoreData[0].productId === "com.tureya.numerology.adfree")) {
+                                console.log(" Product not bought,buy the ad free product from app store");
+                                                
+                                InAppPurchase.buy('com.tureya.numerology.adfree')
+                                    .then( (buyData) => {
+                                        console.log('Data from apple app store is '+JSON.stringify(buyData));
+                                        this.person.numrlgyMethod = 'P';
+                                        this.userData.setPurchased();
+                                        this.appPurchased = true;
+                                        this.showBuyButton = false;
+                                        let alert = this.alertCtrl.create({
+                                                    title: 'Pythagorean feature unlocked!',
+                                                    subTitle: 'Congratulations!!!',
+                                                    buttons: ['OK']
+                                                    });
+                                        alert.present();
+                                    })
+                                    .catch( (err) => {
+                                        console.log(' method buy error  '+JSON.stringify(err));   
+                                        this.person.numrlgyMethod = 'C';
+                                        let alert = this.alertCtrl.create({
+                                                    title: 'Error!',
+                                                    subTitle: err.errorMessage,
+                                                    buttons: ['OK']
+                                                    });
+                                        alert.present();
                                         });
-                            alert.present();
-                            });
-                }else {
-                    this.person.numrlgyMethod = 'P';
-                    //res(this.person.numrlgyMethod);
-                    console.log(" Item already bought, pyth value set to => "+this.person.numrlgyMethod);
+                            }else {
+                                this.person.numrlgyMethod = 'P';
+                                this.userData.setPurchased();
+                                this.appPurchased = true;
+                                this.showBuyButton = false;
+                                //res(this.person.numrlgyMethod);
+                                console.log(" Item already bought, pyth value set to => "+this.person.numrlgyMethod);
+                            }
+                        })
+                        .catch((err) => {
+                                console.log(" Error in restoring purchases => "+JSON.stringify(err));
+                        });
                 }
-            })
-            .catch((err) => {
-                    console.log(" Error in restoring purchases => "+JSON.stringify(err));
-            });*/
+                }
+            ]
+            });
+            confirm.present();   
+      }
   }
   
 }

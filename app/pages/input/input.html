@@ -29,34 +29,56 @@
       <ion-item *ngIf="!userform.controls.lName.valid">
           <p>Please enter a valid last name.</p>
       </ion-item>
-
+      <div class="spacer" style="height: 40px;"></div>
       <ion-grid>
         <ion-row no-padding>
-          <ion-col no-padding></ion-col>
-          <ion-col no-padding><button type="button" class="borders-button" [class.button-appgreen]="person.numrlgyMethod == 'C'" [class.button-clear]="person.numrlgyMethod == 'P'"  (click)="chalBtnClicked()"> Chaldean </button></ion-col>
-          <ion-col no-padding ><button type="button" class="borders-button" [class.button-appgreen]="person.numrlgyMethod == 'P'" [class.button-clear]="person.numrlgyMethod == 'C'" (click)="pythBtnClicked()" > Pythagorean </button></ion-col>
-          <ion-col no-padding ></ion-col>
+          <ion-col no-padding width-10></ion-col>
+          <ion-col no-padding ><button full type="button" class="borders-button" [class.button-appgreen]="person.numrlgyMethod == 'C'" [class.button-clear]="person.numrlgyMethod == 'P'"  (click)="chalBtnClicked()"> Chaldean </button></ion-col>
+          <ion-col no-padding ><button full type="button" class="borders-button" [class.button-appgreen]="person.numrlgyMethod == 'P'" [class.button-clear]="person.numrlgyMethod == 'C'" (click)="pythBtnClicked()" > Pythagorean </button></ion-col>
+          <ion-col no-padding width-10></ion-col>
         </ion-row>
       </ion-grid>
-      <ion-grid>
+      <ion-grid *ngIf='!showBuyButton'>
         <ion-row baseline>
-          <ion-col width-20></ion-col>
-          <ion-col width-60>
+          <ion-col width-10></ion-col>
+          <ion-col width-80>
             <div >
-              <button  block medium appgreen  (click)="showResult()" type="submit" [disabled]="(!userform.valid) || (userform.controls.fName.value.length == 0 && userform.controls.mName.value.length == 0 && userform.controls.lName.value.length == 0)"> Calculate </button>
-             
+              <button  block medium appgreen  (click)="showResult()" type="submit" [disabled]="(!userform.valid) || (userform.controls.fName.value.length == 0 && userform.controls.mName.value.length == 0 && userform.controls.lName.value.length == 0)"> 
+                Calculate 
+                
+              </button>
+              
             </div>
+             
             </ion-col>
           <!--<ion-col width-60><button end  block medium  (click)="showResult()" appgreen type="submit" [disabled]="!userinput.valid"> Calculate </button></ion-col>-->
-          <ion-col width-20></ion-col>
+          <ion-col width-10></ion-col>
         </ion-row>
         <ion-row baseline>
-          <ion-col width-20></ion-col>
-          <ion-col width-60><button block medium danger type="button" (click)="clearInput()"> Clear </button> </ion-col>
-          <ion-col width-20></ion-col>
+          <ion-col width-10></ion-col>
+          <ion-col width-80><button block medium danger type="button" (click)="clearInput()"> Clear </button> </ion-col>
+          <ion-col width-10></ion-col>
         </ion-row>
       </ion-grid>
-    </form>
 
+      <div *ngIf='showBuyButton'>
+          <!--<button  block medium appgreen  (click)="pythBtnClicked()" type="submit" ></button>-->
+            <ion-fab right edge>
+              <button ion-fab appgreen outline block appgreen  (click)="pythBtnClicked()" type="submit">Buy full version <ion-icon name="card"></ion-icon></button>
+            </ion-fab>
+      </div>
+    </form>
+    <!--Purchased: << {{appPurchased}} >> <br>-->
+    <!--showBuyButton : {{showBuyButton}} >>-->
+
+    <ion-footer *ngIf="!appPurchased">
+    <ion-toolbar no-shadow text-right>
+        Free version 
+            <ion-badge item-right dark>{{free_tries}}</ion-badge> 
+            / 
+            <ion-badge item-right dark>{{max_tries}}</ion-badge> 
+        done. 
+    </ion-toolbar>
+  </ion-footer>
     <!--Numerology Method = {{person.numrlgyMethod}}-->
 </ion-content>

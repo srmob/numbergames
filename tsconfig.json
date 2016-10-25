@@ -17,5 +17,9 @@
   "compileOnSave": false,
   "atom": {
     "rewriteTsconfig": false
+  },
+  "parserOptions": {
+    
+    "sourceType": "module"
   }
 }

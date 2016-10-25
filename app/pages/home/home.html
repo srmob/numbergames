@@ -9,33 +9,34 @@
   <p>
     •	Only use the name window to input your first name, middle name and last name. You must at least enter one name.
   </p>
-  <br>
+     <div class="spacer" style="height: 10px;"></div>
   <p>
     •	All other symbols except Alphabets will be ignored. Numeric values as part of the name are accepted in the Full Version.
   </p>
-  <br>
+  <div class="spacer" style="height: 10px;"></div>
   <p>
-    • You can only select the option of Chaldean for the calculation. Pythagorean is only available in the Full Version.
+    • Chaldean option is allowed for 5 times in free version. Pythagorean & unlimited calculation is only available in the Full Version.
   </p>
-  <br>
+  <div class="spacer" style="height: 10px;"></div>
   <p>
     •	Total will be calculated for each name and the full name.
   </p>
-  
+   <div class="spacer" style="height: 30px;"></div>
    <ion-grid>
     <ion-row baseline>
-      <ion-col width-20></ion-col>
-      <ion-col width-60><button  block medium type="submit" (click)="goToInputPage()" appgreen>Get Started</button></ion-col>
+      <ion-col width-10></ion-col>
+      <ion-col width-80><button  block medium type="submit" (click)="goToInputPage()" appgreen>Get Started</button></ion-col>
       <!--<ion-col width-60><button  type="submit" block medium appgreen  (click)="showResult1()"> Calculate1 </button></ion-col>-->
       <!--<ion-col width-60><button  block medium  (click)="showModal()" appgreen>Modal</button></ion-col>-->
       
        
-      <ion-col width-20></ion-col>
+      <ion-col width-10></ion-col>
     </ion-row>
    </ion-grid>
-
+   
+   <!--Purchased: {{appPurchased}}-->
    <ion-footer >
-    <ion-toolbar no-shadow text-right>v0.03.11
+    <ion-toolbar no-shadow text-right>v0.0.5
     </ion-toolbar>
   </ion-footer>
   
