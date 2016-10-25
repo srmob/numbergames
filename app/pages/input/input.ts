@@ -30,7 +30,6 @@ export class InputPage {
   // private userinputform;
   public userform;
   private admobId: any;
-   private IAP;
 
   fName:FormControl;
   mName:FormControl;
@@ -41,15 +40,14 @@ export class InputPage {
    private interstatial_pub_id_android: string;
    private banner_pub_id_ios: string;
    private interstatial_pub_id_ios: string;
+   private setPyth : boolean;
 
   constructor(public navCtrl: NavController, private platform: Platform,private navParams: NavParams,private formBuilder: FormBuilder,public alertCtrl: AlertController) {
       
       console.log("Input  page entered:-->");
       console.log("navigation views count  at input page is "+this.navCtrl.length());
 
-      this.IAP = {
-        list: [ "adfree"]
-      };
+      //this.setPyth = false;
       //webtalk445 account details for admob Android
       /*this.banner_pub_id_android = 'ca-app-pub-1542644798135048/9464427615';
       this.interstatial_pub_id_android = 'ca-app-pub-1542644798135048/9464427615'*/
@@ -81,7 +79,7 @@ export class InputPage {
         this.platform.ready().then(() => {
             console.log(" platform ready event in input.ts"+AdMob);
                 if(AdMob)  {
-                    console.log("Admob exists and running, banne ad id"+this.admobId.banner)
+                    //console.log("Admob exists and running, banne ad id"+this.admobId.banner)
                     AdMob.createBanner(
                         {
                         adId:this.admobId.banner,
@@ -162,15 +160,15 @@ export class InputPage {
   }*/
   addTotal(value){
       var sum = 0;
-      console.log("Value passed is"+value)
+     // console.log("Value passed is"+value)
       value = Math.floor(value);
       while (value > 0 ) {
         sum += value % 10;
-        console.log("sum is "+sum);
+       // console.log("sum is "+sum);
         value = Math.floor(value / 10);
-        console.log("within while value is - "+value)
+       // console.log("within while value is - "+value)
       }
-      console.log("Sum of a integer within number is :: "+sum);
+     // console.log("Sum of a integer within number is :: "+sum);
       if( sum > 9 )
             return this.addTotal( sum );
       else
@@ -183,17 +181,17 @@ export class InputPage {
       var nameSum = 0;
       if (this.person.numrlgyMethod == 'C') {
         for (let entry of name) {
-            console.log("fName entry value is "+this.chaldeanValues[entry]);
+            //console.log("fName entry value is "+this.chaldeanValues[entry]);
             nameSum += this.chaldeanValues[entry];
         }
       }else if (this.person.numrlgyMethod == 'P'){
         for (let entry of name) {
-            console.log("fName entry value  as per Pyth is "+this.pythValues[entry]);
+            //console.log("fName entry value  as per Pyth is "+this.pythValues[entry]);
             nameSum += this.pythValues[entry];
         }
 
       }
-      console.log("Total Sum for given name -->"+name+" is--> "+this.person.nameSum);
+      //console.log("Total Sum for given name -->"+name+" is--> "+this.person.nameSum);
       return nameSum;
         
   }
@@ -220,11 +218,11 @@ export class InputPage {
     this.person.lName = this.userform.controls['lName'].value  ;
     console.log("Fname is "+this.person.fName);
      if ( (this.person.fName).length){
-         console.log("Fname is "+this.person.fName);
-         console.log("Fname is trime "+this.person.fName.replace(/\s+/g, ''));
+        //  console.log("Fname is "+this.person.fName);
+        //  console.log("Fname is trime "+this.person.fName.replace(/\s+/g, ''));
          this.person.fNameValue = this.calculateSum(this.person.fName.replace(/\s+/g, '').toUpperCase().trim(),1);
          this.person.totalSum += this.person.fNameValue;
-         console.log("Total Sum after fName is::"+this.person.totalSum);
+        //  console.log("Total Sum after fName is::"+this.person.totalSum);
          if(this.person.fNameValue >= 10 ){
             this.person.fNameValue = this.addTotal(this.person.fNameValue);
         }
@@ -232,7 +230,7 @@ export class InputPage {
      if ( (this.person.mName).length){
          this.person.mNameValue =  this.calculateSum(this.person.mName.replace(/\s+/g, '').toUpperCase().trim(),2);
          this.person.totalSum += this.person.mNameValue;
-         console.log("Total Sum after mName is::"+this.person.totalSum);
+        //  console.log("Total Sum after mName is::"+this.person.totalSum);
          if(this.person.mNameValue >= 10 ){
             this.person.mNameValue = this.addTotal(this.person.mNameValue);
          }
@@ -240,11 +238,10 @@ export class InputPage {
      if ( (this.person.lName).length){
          this.person.lNameValue = this.calculateSum(this.person.lName.replace(/\s+/g, '').toUpperCase().trim(),3);
          this.person.totalSum += this.person.lNameValue;
-         console.log("Total Sum after lName is::"+this.person.totalSum);
+        //  console.log("Total Sum after lName is::"+this.person.totalSum);
          if(this.person.lNameValue >= 10 ){
-             console.log("Last Name value before add is -"+this.person.lNameValue);
+            
             this.person.lNameValue = this.addTotal(this.person.lNameValue);
-            console.log("Last Name value after add is -"+this.person.lNameValue);
           }
      }
      /*if ( (this.person.fName).length || (this.person.mName).length || (this.person.lName).length ){
@@ -278,46 +275,155 @@ export class InputPage {
       this.person.numrlgyMethod = 'C';
       //console.log("Numerology method is -> "+this.numrlgyMethod);
   }
-  pythBtnClicked(){
-        
-        InAppPurchase.getProducts(['com.tureya.numerology.adfree'])
-            .then(function (products) {
-                console.log('Products are '+JSON.stringify(products));
-                /*
-                [{ productId: 'com.yourapp.prod1', 'title': '...', description: '...', price: '...' }, ...]
-                */
-            })
-            .catch(function (err) {
-                console.log('Error in InAppPurchase getting products---> '+JSON.stringify(err));
+  
+   pythBtnClicked2() : Promise <any>{
+       return new Promise((res,rej)=>{
+          res('P');
+          rej('C')
+       });
+   };
+
+   /**
+    * Called when pyth Button is clicked
+    * Check if product is already purchased using restoreProducts()
+    * If bought then enable the flag
+    * else buy the product 
+
+
+    */
+   pythBtnClicked1(): Promise <any> {
+       return new Promise((res,rej)=>{
+            var pythButtonValue = 'C';
+            //var that = this;
+            this.platform.ready().then(() => {
+                    /*InAppPurchase.getProducts(['com.tureya.numerology.adfree1'])
+                    .then(function (products) {
+                            console.log('Products are '+JSON.stringify(products));
+                            console.log(' method is '+that.person.numrlgyMethod);
+                    })
+                    .catch(function (err) {
+                        console.log('Error in InAppPurchase getting products---> '+JSON.stringify(err));
+                        console.log(' method-error is '+that.person.numrlgyMethod);
+                    });*/
+                    InAppPurchase.restorePurchases()
+                        .then((restoreData)=>{
+                            console.log("Product ID captured from restorePurchases is "+restoreData[0].productId);
+                            if (!(restoreData[0].productId === "com.tureya.numerology.adfree")) {
+                                console.log(" Product not bought,buy the ad free product from app store");
+
+                                InAppPurchase.buy('com.tureya.numerology.adfree1')
+                                    .then( (buyData) => {
+                                        console.log('Data from apple app store is '+JSON.stringify(buyData));
+                                        console.log(' method buy  '+this.person.numrlgyMethod);
+                                        this.person.numrlgyMethod = 'P';
+                                        res(this.person.numrlgyMethod);
+                                    })
+                                    .catch( (err) => {
+                                        console.log(' method buy error  '+this.person.numrlgyMethod);   
+                                        //this.person.numrlgyMethod = 'C';
+                                        res(this.person.numrlgyMethod);
+                                    });
+                            }else {
+                                this.person.numrlgyMethod = 'P';
+                                res(this.person.numrlgyMethod);
+                                console.log(" Item already bought, pyth value set to => "+this.person.numrlgyMethod);
+                            }
+                        })
+                        .catch((err) => {
+                                console.log(" Error in restoring purchases => ");
+                        });
+
+
+                    
+                    /*InAppPurchase.getProducts(['com.tureya.numerology.adfree1']).then((products)=>{
+                         console.log('Products are '+JSON.stringify(products));
+                          console.log('Products are 1'+this.person.numrlgyMethod);
+                    }).catch((err)=>{
+                         console.log('Error in InAppPurchase getting products---> '+JSON.stringify(err));
+                    });*/
+                    
+                    /*InAppPurchase.restorePurchases()
+                        .then((restoreData)=>{
+                            console.log("Product ID captured from restorePurchases is "+restoreData[0].productId);
+                            if (!(restoreData[0].productId === "com.tureya.numerology.adfree")) {
+                                console.log(" Product not bought,buy the ad free product from app store");
+                            }else {
+                                this.person.numrlgyMethod = 'P';
+                                console.log(" Item already bought, pyth value set to => "+this.person.numrlgyMethod);
+                            }
+                        })
+                        .catch((err) => {
+
+                        });*/
+
+                    //InAppPurchase.getProduct
+                    /*InAppPurchase.getProducts(['com.tureya.numerology.adfree'])
+                    .then(function (products) {
+                            console.log('Products are '+JSON.stringify(products));
+                    })
+                    .catch(function (err) {
+                        console.log('Error in InAppPurchase getting products---> '+JSON.stringify(err));
+                    });*/
+
+
+                    //console.log("get products is done ");
+                    /*InAppPurchase.restorePurchases().then(function(restoreData){
+                        console.log("Data captured from restorePurchases is "+JSON.stringify(restoreData));
+                        console.log("Product ID captured from restorePurchases is "+restoreData[0].productId);
+                        console.log("pyth button value is "+pythButtonValue);
+
+                        //if (!(restoreData[0].productId === "com.tureya.numerology.adfree")) {
+                            console.log(" Buy the ad free product from app store");
+                            
+                            // Buy the product from App Store
+                            
+                            InAppPurchase.buy('com.tureya.numerology.adfree').then(function (buyData) {
+                                console.log('Data from apple app store is '+JSON.stringify(buyData));
+                                //this.person.numrlgyMethod = 'P';
+                                pythButtonValue = 'P';
+                                res('P');
+                                console.log("pyth as-->"+pythButtonValue);
+                                if(AdMob)  {
+                                    AdMob.hideBanner();
+                                    console.log('Admob is disabled , all banners hidden');
+                                }
+                                
+                            })
+                            .catch(function (err) {
+                                //this.person.numrlgyMethod = 'C';
+                                pythButtonValue = 'C';
+                                rej('C');
+                                console.log("pyth within error buy as-->"+pythButtonValue);
+                                console.log("Error in buy InAppPurchase"+JSON.stringify(err));
+                                if(err.errorCode){
+                                    console.log("Error code is "+err.errorCode);
+                                    let alert = this.alertCtrl.create({
+                                        title: 'Error!',
+                                        subTitle: 'Something went wrong!!!',
+                                        buttons: ['OK']
+                                        });
+                                    alert.present();
+                                }
+                                
+                            });
+                        /*}else {
+                            //console.log("product already purchased ::"+this.setPyth);
+                            //this.person.numrlgyMethod = 'P';
+                            pythButtonValue = 'P';
+                            res('P');
+                            console.log("pyth in else is -->"+pythButtonValue);
+                            return pythButtonValue;
+                        }
+                    });*/
+
             });
+    
+        });
+       
         //    var products = InAppPurchase.getProducts(['com.tureya.numerology.adfree']);
         //   console.log('products are '+JSON.stringify(products));
-        console.log("get products is done ")
-        InAppPurchase.buy('com.tureya.numerology.adfree').then(function (data) {
-                console.log('Data from apple app store is '+JSON.stringify(data));
-                let alert = this.alertCtrl.create({
-                    title: 'Full version added!',
-                    subTitle: 'Congratulations !! Full version includes Pythagorean numerology method and its adfree!!!',
-                    buttons: ['OK']
-                });
-                alert.present();
-                if(AdMob)  {
-                    AdMob.hideBanner();
-                    console.log('Admob is disabled , all banners hidden');
-                }
-                this.person.numrlgyMethod = 'P';
-                    /*
-                    {
-                        transactionId: ...
-                        receipt: ...
-                        signature: ...
-                    }
-                    */
-                })
-                .catch(function (err) {
-                    this.person.numrlgyMethod = 'C';
-                    console.log("Error in buy InAppPurchase"+JSON.stringify(err));
-                });
+        
+        /**/
       /*let alert = this.alertCtrl.create({
                 title: 'Full Version!',
                 subTitle: 'Full version includes Pythagorean numerology method and its adfree!!!',
@@ -342,6 +448,77 @@ export class InputPage {
        
       //console.log("Numerology method PythBtn is -> "+this.numrlgyMethod)
   }
+  pythBtnClicked3(){
+      //console.log("Pyth Button Clicked");
+      console.log("Pyth Button Clicked and before value is "+this.person.numrlgyMethod);
+      this.pythBtnClicked1().then((data) =>{
+          this.person.numrlgyMethod = data;
+          console.log('data in pyth1 JSON is '+JSON.stringify(data));
+          if(AdMob)  {
+                AdMob.hideBanner();
+                console.log('Admob is disabled , all banners hidden');
+            }
+      }).catch(function (err) {
+          this.person.numrlgyMethod = err;
+        console.log("Error in pyth1"+JSON.stringify(err));
+      });
 
+      
+        console.log("Pyth Button Clicked and after value is "+this.person.numrlgyMethod);
+  }
+  pythBtnClicked(){
+      
+      InAppPurchase.getProducts(['com.tureya.numerology.adfree','com.tureya.numerology.adfree_one'])
+            .then(function (products) {
+                    console.log('Products are '+JSON.stringify(products));
+            })
+            .catch(function (err) {
+                console.log('Error in InAppPurchase getting products---> '+JSON.stringify(err));
+            });
+      
+      
+      
+     /* InAppPurchase.restorePurchases()
+            .then((restoreData)=>{
+                console.log("Product IDs captured from restorePurchases is "+JSON.stringify(restoreData));
+                console.log("Product ID captured from restorePurchases is "+restoreData[0].productId);
+                console.log("Product ID captured from restorePurchases is "+restoreData[1].productId);
+                console.log("Includes  "+restoreData.includes("com.tureya.numerology.adfree"));
+                console.log("Includes one "+restoreData.includes("com.tureya.numerology.adfree.one"));
+                if (!(restoreData[0].productId === "com.tureya.numerology.adfree.one")) {
+                    console.log(" Product not bought,buy the ad free product from app store");
+
+                    InAppPurchase.buy('com.tureya.numerology.adfree.one')
+                        .then( (buyData) => {
+                            console.log('Data from apple app store is '+JSON.stringify(buyData));
+                            console.log(' method buy  '+this.person.numrlgyMethod);
+                            this.person.numrlgyMethod = 'P';
+                            let alert = this.alertCtrl.create({
+                                        title: 'Pythagorean feature unlocked!',
+                                        subTitle: 'Congratulations!!!',
+                                        buttons: ['OK']
+                                        });
+                            alert.present();
+                        })
+                        .catch( (err) => {
+                            console.log(' method buy error  '+this.person.numrlgyMethod);   
+                            this.person.numrlgyMethod = 'C';
+                            let alert = this.alertCtrl.create({
+                                        title: 'Error!',
+                                        subTitle: 'Something went wrong!!!',
+                                        buttons: ['OK']
+                                        });
+                            alert.present();
+                            });
+                }else {
+                    this.person.numrlgyMethod = 'P';
+                    //res(this.person.numrlgyMethod);
+                    console.log(" Item already bought, pyth value set to => "+this.person.numrlgyMethod);
+                }
+            })
+            .catch((err) => {
+                    console.log(" Error in restoring purchases => "+JSON.stringify(err));
+            });*/
+  }
   
 }

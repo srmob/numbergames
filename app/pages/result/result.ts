@@ -61,20 +61,20 @@ export class ResultPage {
       this.lNameText = this.numerologyDesc[this.user.lNameValue];
       this.totalText = this.numerologyDesc[this.user.totalValueSum];
       this.numerologyMethod = this.user.numrlgyMethod;
+      console.log("Numerology method is "+this.numerologyMethod);
   }
   
   showNumberDetails(event) {
     console.log("show NumberDetails Button clicked")
      //this.navCtrl.push(NumbersInfoPage);
-    //  if ( this.numerologyMethod == 'C') {
+     if ( this.numerologyMethod == 'C') {
     //    //this.navCtrl.push(ChaldeaninfoPage);
-    //    let modal = this.modalCtrl.create(ChaldeaninfoPage);
-    //     modal.present();
-    //  }else {
+        let modal = this.modalCtrl.create(ChaldeaninfoPage);
+        modal.present();
+      }else if ( this.numerologyMethod == 'P'){
        //this.navCtrl.push(PythinfoPage);
        let modal = this.modalCtrl.create(PythinfoPage);
         modal.present();
-     
-     
+      }
   }
 }

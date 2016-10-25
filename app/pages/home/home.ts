@@ -1,8 +1,6 @@
 import { Component,Pipe, PipeTransform} from '@angular/core';
 import { NavController,Platform,ModalController,AlertController} from 'ionic-angular';
 
-import { keyValueFilterPipe } from '../../pipes/pipes';
-import { ChaldeaninfoPage } from '../chaldeaninfo/chaldeaninfo';
 import {InputPage} from '../input/input';
 
 
@@ -11,9 +9,9 @@ declare var AdMob;
 
 
 @Component({
-  templateUrl: 'build/pages/home/home.html',
-  pipes:[keyValueFilterPipe]
+  templateUrl: 'build/pages/home/home.html'
 })
+
 
 export class HomePage {
     
