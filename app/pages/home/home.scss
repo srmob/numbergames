@@ -1,24 +1,16 @@
 .home-page {
-  ion-label{
-    font-size: 20px;
-    font-style: bold; 
-  }
-  p{
-    color: #494848;
-    font-family:  'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
-  }
-  span{
-   font-family:  'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-   letter-spacing: 0.004em;
-    text-overflow: none;
-  }
-  ion-navbar {
-    letter-spacing: 0.05em; 
-    text-overflow: none;
-    font-family:  'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
-  }
-  ion-title{
-    color: appgreen;
-  }
-  
+    ion-label{
+      font-size: 20px;
+      font-style: bold; 
+    }
+    .toolbar-title-app {
+      font-family:  'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      color : #00a39c;
+      text-overflow: none;
+      font-style: normal;
+    }
+    .other-text{
+        font-family:  'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        color: #494848;
+    }
 }
