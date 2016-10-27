@@ -5,6 +5,7 @@ import {InputPage} from '../input/input';
 
 import{AdInfo} from '../../providers/ad-info';
 import{UserData} from '../../providers/user-data';
+import {InAppPurchase} from 'ionic-native';
 
 
 //declare var AdMob;
@@ -32,7 +33,6 @@ export class HomePage {
       console.log("navigation views count  at home page is "+this.navCtrl.length());
         
       this.platform = platform;
-      
       
       
       

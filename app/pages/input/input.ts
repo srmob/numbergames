@@ -546,42 +546,50 @@ export class InputPage {
                     InAppPurchase.getProducts(['com.tureya.numerology.adfree','com.tureya.numerology.adfreeone'])
                         .then(function (products) {
                                 console.log('Products are '+JSON.stringify(products));
+                                console.log('Products length '+products.length);
                         })
                         .catch(function (err) {
                             console.log('Error in InAppPurchase getting products---> '+JSON.stringify(err));
                         });
-
-                    InAppPurchase.restorePurchases()
+                    InAppPurchase.restorePurchases().then((data)=>{
+                        console.log('Restore Data from apple app store is ==>  '+JSON.stringify(data));
+                        InAppPurchase.buy('com.tureya.numerology.adfree')
+                        .then( (buyData) => {
+                            console.log('Data from apple app store is '+JSON.stringify(buyData));
+                            this.person.numrlgyMethod = 'P';
+                            this.userData.setPurchased();
+                            this.appPurchased = true;
+                            this.showBuyButton = false;
+                            let alert = this.alertCtrl.create({
+                                        title: 'Pythagorean feature unlocked!',
+                                        subTitle: 'Congratulations!!!',
+                                        buttons: ['OK']
+                                        });
+                            alert.present();
+                        })
+                        .catch( (err) => {
+                            console.log(' method buy error  '+JSON.stringify(err));   
+                            this.person.numrlgyMethod = 'C';
+                            let alert = this.alertCtrl.create({
+                                        title: 'Error!',
+                                        subTitle: err.errorMessage,
+                                        buttons: ['OK']
+                                        });
+                            alert.present();
+                            });
+                    })
+                    .catch((err)=>{
+                        console.log("error while restoring data, in input.ts"+JSON.stringify(err));
+                    });
+                    
+                    /*InAppPurchase.restorePurchases()
                         .then((restoreData)=>{
                             
                             console.log("Product ID captured from restorePurchases is "+restoreData[0].productId);
                             if (!(restoreData[0].productId === "com.tureya.numerology.adfree")) {
                                 console.log(" Product not bought,buy the ad free product from app store");
                                                 
-                                InAppPurchase.buy('com.tureya.numerology.adfree')
-                                    .then( (buyData) => {
-                                        console.log('Data from apple app store is '+JSON.stringify(buyData));
-                                        this.person.numrlgyMethod = 'P';
-                                        this.userData.setPurchased();
-                                        this.appPurchased = true;
-                                        this.showBuyButton = false;
-                                        let alert = this.alertCtrl.create({
-                                                    title: 'Pythagorean feature unlocked!',
-                                                    subTitle: 'Congratulations!!!',
-                                                    buttons: ['OK']
-                                                    });
-                                        alert.present();
-                                    })
-                                    .catch( (err) => {
-                                        console.log(' method buy error  '+JSON.stringify(err));   
-                                        this.person.numrlgyMethod = 'C';
-                                        let alert = this.alertCtrl.create({
-                                                    title: 'Error!',
-                                                    subTitle: err.errorMessage,
-                                                    buttons: ['OK']
-                                                    });
-                                        alert.present();
-                                        });
+                                
                             }else {
                                 this.person.numrlgyMethod = 'P';
                                 this.userData.setPurchased();
@@ -593,7 +601,7 @@ export class InputPage {
                         })
                         .catch((err) => {
                                 console.log(" Error in restoring purchases => "+JSON.stringify(err));
-                        });
+                        });*/
                 }
                 }
             ]
